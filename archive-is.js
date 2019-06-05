@@ -7,14 +7,24 @@
 
 var links,thisLink;
 
+function createArchiveLink(archivethis, thisLink) {
+  var newHTML         = document.createElement ('span');
+  newHTML.innerHTML   = '<a title="archive-is" target="_blank" href="'+archivethis+'">[📦]</a>';
+  thisLink.appendChild (newHTML);
+}
+
 links = document.evaluate("//a[@href][@class='ul']", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 
 for (var i=0;i<links.snapshotLength;i++) {
-    var thisLink = links.snapshotItem(i);
+  var thisLink = links.snapshotItem(i);
+  var archivethis = thisLink.href.replace('https://', 'https://archive.is/?run=1&url=https://');
+  createArchiveLink(archivethis, thisLink);
+}
 
-    var archivethis = thisLink.href.replace('https://',
-                                          'https://archive.is/?run=1&url=https://');
-    var newHTML         = document.createElement ('span');
-    newHTML.innerHTML   = '<a title="archive-is" target="_blank" href="'+archivethis+'">[📦]</a>';
-    thisLink.appendChild (newHTML);
+links = document.evaluate("//div[@class='subject']/a[@href]", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+
+for (var i=0;i<links.snapshotLength;i++) {
+  var thisLink = links.snapshotItem(i);
+  var archivethis = thisLink.href.replace('https://', 'https://archive.is/?run=1&url=https://');
+  createArchiveLink(archivethis, thisLink);
 }

@@ -2,14 +2,16 @@
 // @name          archive-is
 // @namespace     https://bitcointalk.org/
 // @description   archive-is fast link
-// @require       https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js
-// @version       0.4
+// @version       0.5
 // @downloadURL   https://github.com/blackout314/greasemoney-btctalk_archiveis/raw/master/archive-is.js
 // @grant         none
 // @include       https://bitcointalk.org/*
 // ==/UserScript==
 
+// @ require? https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js
 var links,thisLink;
+const replace = 'https://';
+const replaced = 'https://archive.is/?run=1&url=https://';
 let loc;
 
 var openAndClose = function(elem) {
@@ -24,6 +26,14 @@ var openAndClose = function(elem) {
     elem.originalTarget.innerText = '✅';
     //newWindow.close();
   }, 2000);
+}
+
+function createPageLink() {
+  var archivethis     = window.location.href;
+	var newHTML         = document.createElement ('div');
+	newHTML.innerHTML   = '&nbsp; CURRENT PAGE [<a data-ref="current" title="archive-is" target="_blank" href="https://archive.is/?run=1&url='+archivethis+'">📦</a>]';
+  newHTML.style       = 'position:fixed;top:0;left:0px;border:1px black solid;background:white;font-size:8px;';
+  document.body.appendChild(newHTML);
 }
 
 function createArchiveLink(archivethis, thisLink, dataattrib) {
@@ -43,30 +53,42 @@ function addGlobalStyle(css) {
   head.appendChild(style);
 }
 
+function isBitcointalkLink(thisLink) {
+  return thisLink.href.indexOf('bitcointalk') > 0;
+}
+
 links = document.evaluate("//a[@href][@class='ul']", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 
 for (var i=0;i<links.snapshotLength;i++) {
   var thisLink = links.snapshotItem(i);
-  var archivethis = thisLink.href.replace('https://', 'https://archive.is/?run=1&url=https://');
-  createArchiveLink(archivethis, thisLink, 'one');
+	if(isBitcointalkLink(thisLink)) {
+    var archivethis = thisLink.href.replace(replace, replaced);
+    createArchiveLink(archivethis, thisLink, 'one');
+  }
 }
 
 links = document.evaluate("//div[@class='subject']/a[@href]", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 
 for (var i=0;i<links.snapshotLength;i++) {
   var thisLink = links.snapshotItem(i);
-  var archivethis = thisLink.href.replace('https://', 'https://archive.is/?run=1&url=https://');
-  createArchiveLink(archivethis, thisLink, 'two');
+  if(isBitcointalkLink(thisLink)) {
+    var archivethis = thisLink.href.replace(replace, replaced);
+    createArchiveLink(archivethis, thisLink, 'two');
+  }
 }
 
 links = document.evaluate("//a[contains(.,'All')]", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 
 for (var i=0;i<links.snapshotLength;i++) {
   var thisLink = links.snapshotItem(i);
-  var archivethis = thisLink.href.replace('https://', 'https://archive.is/?run=1&url=https://');
-  createArchiveLink(archivethis, thisLink, 'three');
+  if(isBitcointalkLink(thisLink)) {
+    var archivethis = thisLink.href.replace(replace, replaced);
+    createArchiveLink(archivethis, thisLink, 'three');
+  }
 }
 
 document.querySelectorAll('.new').forEach((elem) => {
   elem.addEventListener('click', openAndClose, false);
 });
+
+createPageLink();

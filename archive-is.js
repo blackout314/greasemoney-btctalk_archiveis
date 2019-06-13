@@ -77,7 +77,7 @@ for (var i=0;i<links.snapshotLength;i++) {
   }
 }
 
-links = document.evaluate("//a[contains(.,'All')]", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+links = document.evaluate("//a[text()='All']", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 
 for (var i=0;i<links.snapshotLength;i++) {
   var thisLink = links.snapshotItem(i);

@@ -31,7 +31,7 @@ var openAndClose = function(elem) {
 function createPageLink() {
   var archivethis     = window.location.href;
 	var newHTML         = document.createElement ('div');
-	newHTML.innerHTML   = '&nbsp; CURRENT PAGE [<a data-ref="current" title="archive-is" target="_blank" href="https://archive.is/?run=1&url='+archivethis+'">📦</a>]';
+	newHTML.innerHTML   = '&nbsp; [ <a data-ref="current" title="archive-is" target="_blank" href="https://archive.is/?run=1&url='+archivethis+'">CURRENT PAGE 📦</a> ] &nbsp;';
   newHTML.style       = 'position:fixed;top:0;left:0px;border:1px black solid;background:white;font-size:8px;';
   document.body.appendChild(newHTML);
 }
